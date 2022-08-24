@@ -3,9 +3,10 @@
     <div style="display: block">
       <canvas
         baseChart
-        [data]="barChartData"
         [options]="barChartOptions"
         [type]="barChartType"
+        [data]="barChartData"
+        [options]="barChartOptions"
       >
       </canvas>
     </div>
@@ -14,7 +15,7 @@
       mat-button
       mat-raised-button
       color="primary"
-      (click)="randomize()"
+      hidden
     >
       Update
     </button>

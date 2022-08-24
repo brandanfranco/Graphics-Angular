@@ -1,5 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChartConfiguration,
+  ChartData,
+  ChartType,
+  ChartDataset,
+} from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
@@ -8,6 +13,8 @@ import { BaseChartDirective } from 'ng2-charts';
   styleUrls: ['./graphics-bar.component.css'],
 })
 export class GraphicsBarComponent implements OnInit {
+  @Input() horizontal: boolean = false;
+
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   public barChartOptions: ChartConfiguration['options'] = {
@@ -27,83 +34,26 @@ export class GraphicsBarComponent implements OnInit {
   };
   public barChartType: ChartType = 'bar';
 
-  public barChartData: ChartData<'bar'> = {
-    labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012', '2022'],
+  @Input() barChartData!: ChartData<'bar'>;
+  /*{
+    labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
     datasets: [
-      {
-        data: [65, 59, 80, 81, 56, 55, 40, 70],
-        label: 'Series A',
-        backgroundColor: '#FADA55',
-        hoverBackgroundColor: 'red',
-      },
-      {
-        data: [28, 48, 40, 19, 86, 27, 90, 30],
-        label: 'Series B',
-        backgroundColor: '#4B78D6',
-        hoverBackgroundColor: 'red',
-      },
-      {
-        data: [50, 28, 60, 19, 36, 57, 50, 90],
-        label: 'Series C',
-        backgroundColor: '#15C157',
-        hoverBackgroundColor: 'red',
-      },
+      { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+      { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
     ],
   };
+  */
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.horizontal) {
+      //Para invertir las barras y colocarlas horizontalmente necesitamos cambiar el "indexAxis"
+      this.barChartOptions!.indexAxis = 'y';
 
-  public randomize(): void {
-    // Only Change 3 values
-    this.barChartData.datasets[0].data = [
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 100),
-    ];
-
-    this.barChartData.datasets[1].data = [
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 100),
-    ];
-
-    this.barChartData.datasets[2].data = [
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 100),
-
-      Math.round(Math.random() * 100),
-    ];
-    this.chart?.update();
+      //Para que se nos muestren todos los datos horizontalmente también debemos retirar el
+      //"min" que tenemos en el barChartOptions.
+      this.barChartOptions!.scales!['y']!.min = 0;
+    }
   }
 }

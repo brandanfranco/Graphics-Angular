@@ -1,1 +1,22 @@
-<p>dona-http works!</p>
+<h1>Social Media Users</h1>
+<hr />
+<div
+  *ngIf="doughnutChartData.datasets[0].data.length === 0; else users"
+  class="row alert alert-warning"
+>
+  <div class="col">Loading</div>
+</div>
+
+.<ng-template #users>
+  <div class="row">
+    <div class="col">
+      <div style="display: block">
+        <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType">
+        </canvas>
+      </div>
+    </div>
+  </div>
+  <span class="alert alert-primary float-end"
+    >Information in Billions of users</span
+  >
+</ng-template>
